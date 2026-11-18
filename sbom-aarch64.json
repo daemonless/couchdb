@@ -1,0 +1,662 @@
+{
+  "generated": "2026-11-18T12:42:19Z",
+  "image": "couchdb",
+  "tags": {
+    "pkg-aarch64": {
+      "app_version": "3.5.2_5",
+      "arch": "aarch64",
+      "generated": "2026-11-18T12:40:26Z",
+      "packages": {
+        "dotnet": [],
+        "freebsd": [
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-audit-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-blocklist",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-bzip2-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-certctl",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-clibs",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "CDDL-1.0"
+            ],
+            "name": "FreeBSD-ctf-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD-3-Clause"
+            ],
+            "name": "FreeBSD-dhclient",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-fetch",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-kerberos-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libarchive",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libbsdstat",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libcasper",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libexecinfo",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libldns",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libmagic",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libucl",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-locales",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-mtree",
+            "version": "15.1p2"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-ncurses-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-openssl",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-openssl-lib",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-pam-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-pkg-bootstrap",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-rc",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-resolvconf",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-runtime",
+            "version": "15.1p6"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-tcpd",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-ufs-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-utilities",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-xz-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "CDDL-1.0"
+            ],
+            "name": "FreeBSD-zfs-lib",
+            "version": "15.1p1"
+          },
+          {
+            "licenses": [
+              "Zlib"
+            ],
+            "name": "FreeBSD-zlib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "PD"
+            ],
+            "name": "FreeBSD-zoneinfo",
+            "version": "15.1p5"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-zstd-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "MPL20"
+            ],
+            "name": "ca_root_nss",
+            "version": "3.132"
+          },
+          {
+            "licenses": [
+              "APACHE20",
+              "BSD3CLAUSE",
+              "ISCL",
+              "OFL11",
+              "WTFPL"
+            ],
+            "name": "couchdb3",
+            "version": "3.5.2_5"
+          },
+          {
+            "licenses": [
+              "ICU"
+            ],
+            "name": "icu",
+            "version": "76.1,1"
+          },
+          {
+            "licenses": [
+              "MIT"
+            ],
+            "name": "jq",
+            "version": "1.8.2"
+          },
+          {
+            "licenses": [
+              "MPL20"
+            ],
+            "name": "nspr",
+            "version": "4.39"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "oniguruma",
+            "version": "6.9.10"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "pkg",
+            "version": "2.9.2"
+          },
+          {
+            "licenses": [
+              "MPL20"
+            ],
+            "name": "spidermonkey128",
+            "version": "128.14.0_8"
+          }
+        ],
+        "go": [],
+        "java": [],
+        "node": [],
+        "php": [],
+        "python": [],
+        "ruby": [],
+        "rust": []
+      },
+      "source": "pkg",
+      "summary": {
+        "dotnet": 0,
+        "freebsd": 42,
+        "go": 0,
+        "java": 0,
+        "node": 0,
+        "php": 0,
+        "python": 0,
+        "ruby": 0,
+        "rust": 0,
+        "total": 42
+      }
+    },
+    "pkg-latest-aarch64": {
+      "app_version": "3.5.3",
+      "arch": "aarch64",
+      "generated": "2026-11-18T12:40:29Z",
+      "packages": {
+        "dotnet": [],
+        "freebsd": [
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-audit-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-blocklist",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-bzip2-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-certctl",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-clibs",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "CDDL-1.0"
+            ],
+            "name": "FreeBSD-ctf-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD-3-Clause"
+            ],
+            "name": "FreeBSD-dhclient",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-fetch",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-kerberos-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libarchive",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libbsdstat",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libcasper",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libexecinfo",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libldns",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libmagic",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-libucl",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-locales",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-mtree",
+            "version": "15.1p2"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-ncurses-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-openssl",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-openssl-lib",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-pam-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-pkg-bootstrap",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-rc",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-resolvconf",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-runtime",
+            "version": "15.1p6"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-tcpd",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-ufs-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-utilities",
+            "version": "15.1p4"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-xz-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "CDDL-1.0"
+            ],
+            "name": "FreeBSD-zfs-lib",
+            "version": "15.1p1"
+          },
+          {
+            "licenses": [
+              "Zlib"
+            ],
+            "name": "FreeBSD-zlib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "PD"
+            ],
+            "name": "FreeBSD-zoneinfo",
+            "version": "15.1p5"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "FreeBSD-zstd-lib",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "MPL20"
+            ],
+            "name": "ca_root_nss",
+            "version": "3.132"
+          },
+          {
+            "licenses": [
+              "APACHE20",
+              "BSD3CLAUSE",
+              "ISCL",
+              "OFL11",
+              "WTFPL"
+            ],
+            "name": "couchdb3",
+            "version": "3.5.3"
+          },
+          {
+            "licenses": [
+              "ICU"
+            ],
+            "name": "icu",
+            "version": "76.1,1"
+          },
+          {
+            "licenses": [
+              "MIT"
+            ],
+            "name": "jq",
+            "version": "1.8.2"
+          },
+          {
+            "licenses": [
+              "MPL20"
+            ],
+            "name": "nspr",
+            "version": "4.39"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "oniguruma",
+            "version": "6.9.10"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
+            "name": "pkg",
+            "version": "2.9.0"
+          },
+          {
+            "licenses": [
+              "MPL20"
+            ],
+            "name": "spidermonkey128",
+            "version": "128.14.0_9"
+          }
+        ],
+        "go": [],
+        "java": [],
+        "node": [],
+        "php": [],
+        "python": [],
+        "ruby": [],
+        "rust": []
+      },
+      "source": "pkg",
+      "summary": {
+        "dotnet": 0,
+        "freebsd": 42,
+        "go": 0,
+        "java": 0,
+        "node": 0,
+        "php": 0,
+        "python": 0,
+        "ruby": 0,
+        "rust": 0,
+        "total": 42
+      }
+    }
+  }
+}
