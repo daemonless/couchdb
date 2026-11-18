@@ -1,0 +1,95 @@
+name: couchdb
+
+x-daemonless:
+  title: "CouchDB"
+  icon: ":simple-apachecouchdb:"
+  category: "Databases"
+  description: "Seamless multi-primary syncing JSON document database with an HTTP API, MapReduce views, and Couch Replication Protocol support."
+  upstream_url: "https://github.com/apache/couchdb"
+  web_url: "https://couchdb.apache.org/"
+  freshports_url: "https://www.freshports.org/databases/couchdb3/"
+  user: "bsd"
+  mlock: false
+  appjail: true
+  community: "Discord:https://discord.gg/Kb9tkhecZT"
+
+  docs:
+    env:
+      PUID: "User ID for the application process"
+      PGID: "Group ID for the application process"
+      TZ: "Timezone for the container"
+      COUCHDB_USER:
+        desc: "Administrator username created on first start"
+        level: primary
+      COUCHDB_PASSWORD:
+        desc: "Password for COUCHDB_USER (hashed into /config/etc/local.ini on first start; if unset, a random password is saved to /config/admin_password)"
+        type: secret
+        level: primary
+      COUCHDB_SINGLE_NODE:
+        desc: "Automatically create _users and _replicator system databases on startup (set false for multi-node cluster setup)"
+        type: boolean
+        optional: true
+        level: options
+      COUCHDB_SECRET:
+        desc: "Cookie authentication signing secret (generated and persisted in /config/etc/local.d/10-secret.ini if unset)"
+        type: secret
+        optional: true
+        level: advanced
+      NODENAME:
+        desc: "Erlang node host or IP for multi-node clustering (-name couchdb@NODENAME)"
+        optional: true
+        level: advanced
+      COUCHDB_ERLANG_COOKIE:
+        desc: "Shared Erlang distribution cookie written to /config/.erlang.cookie for clustering"
+        type: secret
+        optional: true
+        level: advanced
+    volumes:
+      /config: "Database files (/config/data) and persistent configuration (/config/etc)"
+    ports:
+      5984: "HTTP API and Fauxton web UI (/_utils/)"
+
+  notes: |
+    ## First run and Fauxton UI
+
+    CouchDB 3.x requires an administrator account. Set `COUCHDB_USER` and
+    `COUCHDB_PASSWORD` before first start; CouchDB hashes the password in place
+    in `/config/etc/local.ini` on boot. If `COUCHDB_PASSWORD` is omitted,
+    a random password is generated on first start and written to
+    `/config/admin_password` (mode `0600`).
+
+    Sign in to the Fauxton web interface at `http://<host>:5984/_utils/`.
+
+    ## Configuration and persistence
+
+    Both database shards (`/config/data`) and configuration files
+    (`/config/etc/local.ini`, `/config/etc/local.d/*.ini`, and
+    `/config/etc/vm.args`) live under `/config`, so settings changed through
+    Fauxton or `/_config` (such as CORS rules for PouchDB or Obsidian LiveSync)
+    persist across container upgrades without extra bind mounts.
+
+    `COUCHDB_SINGLE_NODE=true` is enabled by default so standalone deployments
+    create `_users` and `_replicator` automatically on first boot. For a
+    multi-node cluster, set `COUCHDB_SINGLE_NODE=false`, `NODENAME`, and a
+    shared `COUCHDB_ERLANG_COOKIE`, and publish ports `4369` (`epmd`) and
+    `9100` alongside `5984`.
+
+services:
+  couchdb:
+    image: ghcr.io/daemonless/couchdb:latest
+    container_name: couchdb
+    restart: unless-stopped
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=changeme
+      - COUCHDB_SINGLE_NODE=true
+
+    volumes:
+      - /path/to/containers/couchdb:/config
+
+    ports:
+      - "5984:5984"

@@ -1,0 +1,152 @@
+#!/bin/sh
+# Start Apache CouchDB; /init drops to the run user during container boot, and
+# dsu drops root if invoked directly via podman exec.
+
+if [ "$(id -u)" -eq 0 ]; then
+    run_user="${DAEMONLESS_USER:-bsd}"
+    run_home=$(getent passwd "${run_user}" | cut -d: -f6)
+    export HOME="${run_home:-/config}" USER="${run_user}" LOGNAME="${run_user}"
+    exec dsu "${run_user}" "$0" "$@"
+fi
+
+# Load secrets from *_FILE environment variables (must run in the launcher, not
+# init.d, so exported variables reach the Erlang VM).
+for var in $(env | sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)_FILE=.*/\1_FILE/p'); do
+    base_var="${var%_FILE}"
+    eval "file_path=\${${var}}"
+    if [ -n "${file_path}" ] && [ -f "${file_path}" ]; then
+        export "${base_var}=$(cat "${file_path}")"
+    else
+        echo "[couchdb] Warning: secret file '${file_path}' for ${var} not found" >&2
+    fi
+done
+
+export HOME=/config
+export ERL_CRASH_DUMP=/config/erl_crash.dump
+
+mkdir -p /config/data /config/etc/local.d
+
+# Seed local.ini once; CouchDB writes its server UUID and runtime /_config
+# updates into the last file in COUCHDB_INI_FILES (/config/etc/local.ini).
+if [ ! -f /config/etc/local.ini ] && [ -f /usr/local/etc/couchdb3/local.ini.sample ]; then
+    cp /usr/local/etc/couchdb3/local.ini.sample /config/etc/local.ini
+    chmod 640 /config/etc/local.ini
+fi
+
+# Seed vm.args once. The FreeBSD port patches -detached into vm.args.sample for
+# rc.d, which would background beam.smp and exit PID 1 immediately; strip it and
+# disable scheduler busy-waiting inside containers.
+if [ ! -f /config/etc/vm.args ] && [ -f /usr/local/etc/couchdb3/vm.args.sample ]; then
+    sed -e '/^[[:space:]]*-detached[[:space:]]*$/d' \
+        -e 's/^#+sbwt /+sbwt /' \
+        -e 's/^#+sbwtdcpu /+sbwtdcpu /' \
+        -e 's/^#+sbwtdio /+sbwtdio /' \
+        /usr/local/etc/couchdb3/vm.args.sample > /config/etc/vm.args
+    chmod 640 /config/etc/vm.args
+fi
+
+if [ -n "${NODENAME}" ] && [ -f /config/etc/vm.args ]; then
+    if grep -q '^-name couchdb@127\.0\.0\.1$' /config/etc/vm.args; then
+        sed -i '' \
+            -e "s/^-name couchdb@127\.0\.0\.1$/-name couchdb@${NODENAME}/" \
+            -e 's/^-kernel inet_dist_use_interface {127,0,0,1}$/#&/' \
+            /config/etc/vm.args
+    elif ! grep -Eq '^-(s?name)[[:space:]]' /config/etc/vm.args; then
+        printf '\n-name couchdb@%s\n' "${NODENAME}" >> /config/etc/vm.args
+    fi
+    if ! grep -q 'inet_dist_listen_min' /config/etc/vm.args; then
+        printf '\n-kernel inet_dist_listen_min 9100\n-kernel inet_dist_listen_max 9100\n' >> /config/etc/vm.args
+    fi
+fi
+
+if [ -n "${COUCHDB_ERLANG_COOKIE}" ]; then
+    cookie_file=/config/.erlang.cookie
+    if [ ! -e "${cookie_file}" ]; then
+        (
+            umask 077
+            printf '%s' "${COUCHDB_ERLANG_COOKIE}" > "${cookie_file}"
+        )
+    elif [ "$(cat "${cookie_file}" 2>/dev/null)" != "${COUCHDB_ERLANG_COOKIE}" ]; then
+        echo "[couchdb] Warning: ${cookie_file} does not match COUCHDB_ERLANG_COOKIE" >&2
+    fi
+    chmod 600 "${cookie_file}" 2>/dev/null || true
+fi
+
+has_ini_key() {
+    section="$1"
+    key_re="$2"
+    awk -v sec="[${section}]" -v re="${key_re}" '
+        /^[[:space:]]*\[/ {
+            line = $0
+            sub(/^[[:space:]]*/, "", line)
+            sub(/[[:space:]]*$/, "", line)
+            in_sec = (line == sec)
+            next
+        }
+        in_sec && $0 !~ /^[[:space:]]*(;|#|$)/ && $0 ~ re {
+            found = 1
+            exit 0
+        }
+        END { exit(found ? 0 : 1) }
+    ' /config/etc/local.d/*.ini /config/etc/local.ini 2>/dev/null
+}
+
+# Standalone deployments need _users and _replicator created on boot with n=1
+# replica; setting COUCHDB_SINGLE_NODE=false leaves 3-node cluster setup open.
+write_single_node() {
+    if [ "$1" = "true" ]; then
+        printf '[couchdb]\nsingle_node = true\n\n[cluster]\nn = 1\n' > /config/etc/local.d/05-single-node.ini
+    else
+        printf '[couchdb]\nsingle_node = %s\n' "$1" > /config/etc/local.d/05-single-node.ini
+    fi
+}
+
+if [ -n "${COUCHDB_SINGLE_NODE}" ]; then
+    write_single_node "${COUCHDB_SINGLE_NODE}"
+elif [ ! -f /config/etc/local.d/05-single-node.ini ] && \
+     ! has_ini_key "couchdb" "^[[:space:]]*single_node[[:space:]]*="; then
+    write_single_node "true"
+fi
+
+# CouchDB 3.x refuses to start with no [admins] entry ("Admin Party" removed),
+# and hashes plaintext passwords in place only in the last COUCHDB_INI_FILES
+# entry (/config/etc/local.ini); local.ini.sample ends with an [admins] header.
+append_admin() {
+    chmod 600 /config/etc/local.ini 2>/dev/null || true
+    if grep -Eq '^[[:space:]]*\[admins\][[:space:]]*$' /config/etc/local.ini 2>/dev/null; then
+        printf '%s = %s\n' "$1" "$2" >> /config/etc/local.ini
+    else
+        printf '\n[admins]\n%s = %s\n' "$1" "$2" >> /config/etc/local.ini
+    fi
+}
+
+admin_user="${COUCHDB_USER:-admin}"
+if [ -n "${COUCHDB_PASSWORD}" ]; then
+    if ! has_ini_key "admins" "^[[:space:]]*${admin_user}[[:space:]]*="; then
+        append_admin "${admin_user}" "${COUCHDB_PASSWORD}"
+    fi
+elif ! has_ini_key "admins" "="; then
+    gen_pw=$(openssl rand -hex 16)
+    append_admin "${admin_user}" "${gen_pw}"
+    (
+        umask 077
+        printf '%s\n' "${gen_pw}" > /config/admin_password
+    )
+    echo "[couchdb] COUCHDB_PASSWORD not set; generated password for '${admin_user}' in /config/admin_password" >&2
+fi
+
+# Persist a stable cookie signing secret so Fauxton sessions survive restarts.
+if ! has_ini_key "chttpd_auth" "^[[:space:]]*secret[[:space:]]*="; then
+    secret_val="${COUCHDB_SECRET:-$(openssl rand -hex 32)}"
+    (
+        umask 077
+        printf '[chttpd_auth]\nsecret = %s\n' "${secret_val}" > /config/etc/local.d/10-secret.ini
+    )
+fi
+
+export COUCHDB_FAUXTON_DOCROOT="/usr/local/www/couchdb3"
+export COUCHDB_ARGS_FILE="/config/etc/vm.args"
+export COUCHDB_INI_FILES="/usr/local/libexec/couchdb3/etc/default.ini /usr/local/libexec/couchdb3/etc/default.d /config/etc/local.d /config/etc/local.ini"
+
+cd /config/data || exit 1
+exec /usr/local/libexec/couchdb3/bin/couchdb "$@"
